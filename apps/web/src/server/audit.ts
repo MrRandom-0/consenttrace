@@ -14,7 +14,9 @@ export type AuditEvent =
   | 'member_removed'
   | 'subscription_changed'
   | 'domain_verified'
-  | 'finding_ignored';
+  | 'finding_ignored'
+  | 'api_key_created'
+  | 'api_key_revoked';
 
 export async function audit(
   orgId: string,

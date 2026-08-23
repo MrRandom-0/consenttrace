@@ -15,6 +15,7 @@
     "test:e2e": "vitest run --testTimeout 180000 'apps/worker/test/scan.e2e.test.ts'",
     "fixtures": "tsx apps/fixtures/src/server.ts",
     "scan": "tsx apps/worker/src/cli.ts",
+    "scan:cloud": "tsx apps/worker/src/cloud-cli.ts",
     "lint": "tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
