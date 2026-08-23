@@ -2,9 +2,13 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { api, fmtDate } from '@/lib/client';
+import { ApiKeysCard } from '@/components/ApiKeysCard';
 import { Card, Chip } from '@/components/ui';
 
-interface MeResponse { org: { id: string; name: string; slug: string; plan: string; role: string } }
+interface MeResponse {
+  org: { id: string; name: string; slug: string; plan: string; role: string };
+  entitlements: { apiAccess: boolean };
+}
 interface TeamResponse { members: Array<{ id: string; email: string; name: string | null; role: string; joined_at: string }> }
 interface AuditResponse { events: Array<{ id: string; event: string; resource_type: string; resource_id: string; created_at: string; actor_email: string | null; metadata: Record<string, unknown> }> }
 
@@ -26,6 +30,8 @@ export default function SettingsPage() {
           </dl>
         ) : <p className="muted">Loading…</p>}
       </Card>
+
+      {me.data && <ApiKeysCard apiAccess={me.data.entitlements.apiAccess} />}
 
       <Card title="Team">
         <table className="tbl">

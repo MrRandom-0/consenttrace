@@ -12,7 +12,8 @@ import { assertVerificationAllowsScan } from './verification';
 export async function createScan(opts: {
   orgId: string;
   orgPlan: string;
-  userId: string;
+  /** Null for API-key-triggered scans (no user actor). */
+  userId: string | null;
   siteEnvironmentId: string;
   scenarios?: ScenarioType[];
   triggerType?: 'manual_cloud' | 'scheduled' | 'api' | 'ci';
@@ -142,7 +143,8 @@ export async function activeBaseline(siteEnvironmentId: string): Promise<Baselin
 
 export async function setBaseline(opts: {
   orgId: string;
-  userId: string;
+  /** Null when set via API key (no user actor). */
+  userId: string | null;
   scan: ScanRow;
   note: string | null;
 }): Promise<void> {

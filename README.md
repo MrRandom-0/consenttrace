@@ -130,8 +130,8 @@ npm run test:e2e     # full Playwright scans against fixtures (SSRF, clean site,
 | Email notifications (regression/failure alerts; log + Resend drivers) | ✅ implemented + tested |
 | Stripe billing: checkout sessions, HMAC-verified idempotent webhooks, subscription state | ✅ implemented + tested (needs live keys) |
 | GitHub Actions CI (typecheck, 98-test suite, builds, extension artifact) | ✅ workflow committed |
-| AI-assisted detection/summaries (prompt registry versioned + governed) | 📝 wiring next |
-| Public /v1 API keys (CLI exists for CI today) | 🔜 |
+| Public /v1 API: hashed org API keys (read/write scopes), sites/scans/findings/evidence/report/baselines endpoints, Idempotency-Key replay, keyset pagination, per-key rate limits, cloud CI client (`npm run scan:cloud`) | ✅ implemented + 10 integration tests |
+| AI-assisted detection/summaries — prompts versioned + governed (docs/prompts); runtime intentionally not wired yet (deterministic evidence ships first) | 📝 |
 
 ## License
 

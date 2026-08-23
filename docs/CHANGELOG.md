@@ -1,5 +1,16 @@
 # Changelog
 
+## [Unreleased] — 2026-08-23 (public /v1 API)
+
+### Added
+- **Org API keys**: `ct_live_` tokens shown once and stored sha256-only, read/write scopes, revocation, last-used tracking, `apiAccess` entitlement enforced at creation AND on every request (plan downgrades disable keys); Settings UI card with one-time token reveal; `api_key_created`/`api_key_revoked` audit events. Migration `0004` (api_keys, idempotency_keys).
+- **`/api/v1` endpoints**: sites (list/create with authorization confirmation), scans (create with `Idempotency-Key` replay; keyset-paginated list with opaque microsecond-safe cursors; detail with `include=result`), findings, evidence index, HTML report stream, baselines. Per-key rate limiting (120/min), structured errors.
+- **Cloud CI client** (`npm run scan:cloud`): resolves a site by id/name, triggers via API, polls to completion, prints findings, deterministic exit codes (0/1/2/64) — spec §71 cloud parity for CI.
+- 10 integration tests driving the real route handlers against real Postgres (hashing, gating, scopes, revocation, idempotency, pagination incl. malformed cursors, baselines).
+
+### Fixed
+- Keyset cursors now carry Postgres's text timestamp (µs precision) — JS `Date` round-trips truncate to ms and silently skipped rows.
+
 ## [Unreleased] — 2026-08-23 (extension live-testing + security audit)
 
 ### Added
