@@ -1,0 +1,64 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "types": [
+      "node"
+    ],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@consenttrace/shared": [
+        "../../packages/shared/src/index.ts"
+      ],
+      "@consenttrace/validation": [
+        "../../packages/validation/src/index.ts"
+      ],
+      "@consenttrace/scanner-core": [
+        "../../packages/scanner-core/src/index.ts"
+      ],
+      "@consenttrace/rule-engine": [
+        "../../packages/rule-engine/src/index.ts"
+      ],
+      "@consenttrace/evidence": [
+        "../../packages/evidence/src/index.ts"
+      ],
+      "@consenttrace/worker": [
+        "../../apps/worker/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".next/types/**/*.ts",
+    "next.config.ts",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
