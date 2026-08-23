@@ -1,0 +1,16 @@
+{
+  "extends": "./.wxt/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "jsx": "react-jsx",
+    "types": ["chrome"],
+    "skipLibCheck": true,
+    "paths": {
+      "@consenttrace/shared": ["../../packages/shared/src/index.ts"],
+      "@consenttrace/scanner-core": ["../../packages/scanner-core/src/index.ts"],
+      "@consenttrace/rule-engine": ["../../packages/rule-engine/src/index.ts"]
+    }
+  },
+  "include": ["entrypoints", "lib", "test", "wxt.config.ts", ".wxt/wxt.d.ts"]
+}

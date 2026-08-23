@@ -1,0 +1,15 @@
+{
+  "name": "@consenttrace/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@consenttrace/evidence": "*",
+    "@consenttrace/rule-engine": "*",
+    "@consenttrace/scanner-core": "*",
+    "@consenttrace/shared": "*",
+    "@consenttrace/validation": "*",
+    "playwright": "^1.49.0"
+  }
+}
