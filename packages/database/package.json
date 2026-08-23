@@ -1,0 +1,17 @@
+{
+  "name": "@consenttrace/database",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "PostgreSQL schema migrations for ConsentTrace. Apply in order; every schema change adds a new numbered migration.",
+  "scripts": {
+    "migrate": "node scripts/migrate.mjs",
+    "dev": "node scripts/dev-db.mjs"
+  },
+  "dependencies": {
+    "postgres": "^3.4.9"
+  },
+  "devDependencies": {
+    "embedded-postgres": "17.10.0-beta.17"
+  }
+}

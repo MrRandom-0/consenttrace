@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.next/
+.wxt/
+.output/
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+scan-output/
+storage/
+.pgdata/
+tmp/
+coverage/
+.DS_Store

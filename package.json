@@ -1,0 +1,32 @@
+{
+  "name": "consenttrace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cookie consent testing with evidence. Test consent. Detect regressions. Prove what happened.",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json && npm run -w @consenttrace/extension typecheck",
+    "test": "vitest run",
+    "test:unit": "vitest run --exclude '**/*.e2e.test.ts'",
+    "test:e2e": "vitest run --testTimeout 180000 'apps/worker/test/scan.e2e.test.ts'",
+    "fixtures": "tsx apps/fixtures/src/server.ts",
+    "scan": "tsx apps/worker/src/cli.ts",
+    "lint": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "overrides": {
+    "vite": "^8.2.0"
+  }
+}
