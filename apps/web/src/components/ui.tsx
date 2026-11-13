@@ -54,16 +54,26 @@ export function Card({ title, right, children, className }: { title?: ReactNode;
 
 export function Stat({ label, value, tone }: { label: string; value: ReactNode; tone?: 'good' | 'bad' | 'neutral' }) {
   return (
-    <div className="card p-4">
-      <p className={`text-[24px] font-bold tracking-tight ${tone === 'bad' ? 'text-[var(--bad)]' : tone === 'good' ? 'text-[var(--good)]' : ''}`}>{value}</p>
-      <p className="muted text-[12.5px]">{label}</p>
+    <div className="card relative overflow-hidden p-4">
+      <span
+        aria-hidden="true"
+        className="absolute inset-y-0 left-0 w-[3px]"
+        style={{ background: tone === 'bad' ? 'var(--bad)' : tone === 'good' ? 'var(--good)' : 'var(--accent)', opacity: tone ? 1 : 0.35 }}
+      />
+      <p className="text-[11px] font-semibold tracking-[0.06em] text-[var(--muted)] uppercase">{label}</p>
+      <p className={`mt-1 text-[26px] leading-none font-bold tracking-tight ${tone === 'bad' ? 'text-[var(--bad)]' : tone === 'good' ? 'text-[var(--good)]' : ''}`}>{value}</p>
     </div>
   );
 }
 
 export function EmptyState({ title, body, action }: { title: string; body: string; action?: ReactNode }) {
   return (
-    <div className="card flex flex-col items-center gap-2 p-10 text-center">
+    <div className="card flex flex-col items-center gap-2 border-dashed p-10 text-center">
+      <span className="mb-1 flex h-11 w-11 items-center justify-center rounded-full bg-[var(--accent-soft)]" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M4.5 13.5h4l2-4.5 3 7 2-4h4" stroke="var(--accent)" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </span>
       <p className="text-[14px] font-semibold">{title}</p>
       <p className="muted max-w-md text-[13px]">{body}</p>
       {action && <div className="mt-2">{action}</div>}

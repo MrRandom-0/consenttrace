@@ -38,11 +38,12 @@ export function AppShell({
   return (
     <QueryClientProvider client={client}>
       <div className="flex min-h-screen">
-        <aside className="flex w-[220px] flex-none flex-col border-r border-[var(--line)] bg-[var(--surface)] px-3 py-4">
+        <aside className="sticky top-0 flex h-screen w-[228px] flex-none flex-col border-r border-[var(--line)] bg-[var(--surface)] px-3 py-4">
           <Link href="/app" className="px-2" aria-label="ConsentTrace overview">
             <Wordmark size={21} />
           </Link>
-          <nav className="mt-6 space-y-0.5">
+          <p className="mt-7 mb-1.5 px-2 text-[10.5px] font-semibold tracking-[0.08em] text-[var(--faint)] uppercase">Workspace</p>
+          <nav className="space-y-0.5">
             {NAV.map((item) => {
               const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
               return (
@@ -53,8 +54,11 @@ export function AppShell({
             })}
           </nav>
           <div className="mt-auto space-y-2 border-t border-[var(--line)] px-2 pt-3">
-            <div className="flex items-center justify-between gap-2">
-              <div className="min-w-0">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-[var(--accent-soft)] text-[12px] font-bold text-[var(--accent)]" aria-hidden="true">
+                {(user.name || user.email).charAt(0).toUpperCase()}
+              </span>
+              <div className="min-w-0 flex-1">
                 <p className="truncate text-[12.5px] font-semibold">{org.name}</p>
                 <p className="muted truncate text-[11px]">{user.email}</p>
               </div>
@@ -65,8 +69,8 @@ export function AppShell({
             </button>
           </div>
         </aside>
-        <main className="min-w-0 flex-1 px-6 py-6">
-          <div className="mx-auto max-w-5xl">{children}</div>
+        <main className="min-w-0 flex-1 px-6 py-7">
+          <div className="mx-auto max-w-6xl">{children}</div>
         </main>
       </div>
     </QueryClientProvider>

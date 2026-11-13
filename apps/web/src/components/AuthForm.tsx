@@ -60,8 +60,8 @@ export function AuthForm({ mode }: { mode: 'login' | 'register' }) {
             <Wordmark size={24} />
           </Link>
         </div>
-        <div className="card p-6">
-          <h1 className="text-[18px] font-bold tracking-tight">{isLogin ? 'Sign in' : 'Create your workspace'}</h1>
+        <div className="card card-elevated p-7">
+          <h1 className="text-[19px] font-bold tracking-tight">{isLogin ? 'Sign in' : 'Create your workspace'}</h1>
           <p className="muted mt-1 text-[13px]">
             {isLogin ? 'Back to the evidence.' : 'Free plan: 1 site, 20 scans a month. No card required.'}
           </p>

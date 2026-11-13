@@ -78,7 +78,8 @@ export default function LandingPage() {
   return (
     <div className="bg-[#0a0d13] text-white" style={{ colorScheme: 'dark' }}>
       {/* Nav */}
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+      <header className="sticky top-0 z-40 border-b border-white/5 bg-[#0a0d13]/80 backdrop-blur-md">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <span className="inline-flex items-center gap-2">
           <Logo size={22} />
           <span className="text-[16px] font-bold tracking-tight">
@@ -91,12 +92,15 @@ export default function LandingPage() {
           <Link href="/login" className="btn btn-ghost !text-white/70 hover:!text-white">Sign in</Link>
           <Link href="/register" className="btn !bg-white !text-[#0a0d13] hover:!bg-white/90">Get started</Link>
         </nav>
+        </div>
       </header>
 
       {/* Hero */}
-      <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pt-16 pb-20 lg:grid-cols-2">
-        <div>
-          <p className="mb-4 inline-flex rounded-full border border-white/15 px-3 py-1 text-[12px] font-semibold text-white/60">
+      <section className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 pt-16 pb-20 lg:grid-cols-2">
+        <div aria-hidden="true" className="pointer-events-none absolute -top-32 left-1/2 h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-[#155eef]/[0.13] blur-3xl" />
+        <div className="relative">
+          <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-3 py-1 text-[12px] font-semibold text-white/60">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
             Cookie consent testing with evidence
           </p>
           <h1 className="text-[44px] leading-[1.05] font-bold tracking-tight">
@@ -104,7 +108,7 @@ export default function LandingPage() {
             <br />
             Detect regressions.
             <br />
-            <span className="text-[#6b9dff]">Prove what happened.</span>
+            <span className="bg-gradient-to-r from-[#6b9dff] to-[#3ecf8e] bg-clip-text text-transparent">Prove what happened.</span>
           </h1>
           <p className="mt-5 max-w-lg text-[16px] leading-relaxed text-white/60">
             A cookie scanner tells you 47 cookies exist. ConsentTrace tells you that yesterday&apos;s deployment made{' '}
@@ -125,7 +129,8 @@ export default function LandingPage() {
         </div>
 
         {/* Evidence card mock (real product data shape) */}
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-2xl">
+        <div className="relative rounded-2xl border border-white/10 bg-white/[0.03] p-5 shadow-2xl ring-1 ring-white/5">
+          <div aria-hidden="true" className="pointer-events-none absolute -inset-px rounded-2xl bg-gradient-to-b from-white/[0.07] to-transparent" />
           <div className="mb-3 flex items-center justify-between">
             <span className="text-[12px] font-semibold tracking-wider text-white/50 uppercase">Regression detected</span>
             <span className="rounded-full border border-red-400/30 bg-red-400/10 px-2.5 py-0.5 text-[11px] font-bold text-red-400">
@@ -157,7 +162,7 @@ export default function LandingPage() {
           <div className="mt-8 grid gap-6 md:grid-cols-4">
             {STEPS.map((step) => (
               <div key={step.n}>
-                <span className="mono text-[13px] font-bold text-[#6b9dff]">{step.n}</span>
+                <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#155eef]/40 bg-[#155eef]/10 font-mono text-[13px] font-bold text-[#6b9dff]">{step.n}</span>
                 <h3 className="mt-1 text-[15px] font-semibold">{step.title}</h3>
                 <p className="mt-1 text-[13px] leading-relaxed text-white/50">{step.body}</p>
               </div>
@@ -171,7 +176,8 @@ export default function LandingPage() {
         <h2 className="text-[26px] font-bold tracking-tight">Built for evidence, end to end</h2>
         <div className="mt-8 grid gap-5 md:grid-cols-3">
           {FEATURES.map((feature) => (
-            <div key={feature.title} className="rounded-xl border border-white/10 bg-white/[0.02] p-5">
+            <div key={feature.title} className="group rounded-2xl border border-white/10 bg-white/[0.02] p-5 transition duration-200 hover:-translate-y-0.5 hover:border-[#155eef]/50 hover:bg-white/[0.04] hover:shadow-[0_16px_40px_-20px_rgba(21,94,239,0.45)]">
+              <span aria-hidden="true" className="mb-3 block h-1 w-8 rounded-full bg-gradient-to-r from-[#155eef] to-[#3ecf8e] transition-all duration-200 group-hover:w-12" />
               <h3 className="text-[14.5px] font-semibold">{feature.title}</h3>
               <p className="mt-1.5 text-[13px] leading-relaxed text-white/50">{feature.body}</p>
             </div>
@@ -213,7 +219,7 @@ export default function LandingPage() {
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`rounded-xl border p-5 ${plan.id === 'agency' ? 'border-[#155eef] bg-[#155eef]/10' : 'border-white/10 bg-white/[0.02]'}`}
+              className={`rounded-2xl border p-5 ${plan.id === 'agency' ? 'border-[#155eef] bg-[#155eef]/10 shadow-[0_20px_50px_-24px_rgba(21,94,239,0.6)]' : 'border-white/10 bg-white/[0.02]'}`}
             >
               {plan.id === 'agency' && <p className="mb-2 text-[10.5px] font-bold tracking-wider text-[#6b9dff] uppercase">Most popular</p>}
               <h3 className="text-[15px] font-semibold">{plan.label}</h3>
