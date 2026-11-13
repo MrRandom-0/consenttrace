@@ -6,6 +6,16 @@ ConsentTrace is a cookie-consent regression testing and evidence platform. It ru
 
 > ConsentTrace provides automated technical observations about website consent behavior. Results depend on the tested configuration, location, browser environment and scan timing. ConsentTrace does not provide legal advice or certify regulatory compliance.
 
+## Screenshots
+
+The web dashboard — scan a site across consent states and keep the evidence:
+
+![ConsentTrace web dashboard landing page](docs/screenshots/landing.png)
+
+Sign in to the dashboard:
+
+![ConsentTrace sign-in page](docs/screenshots/login.png)
+
 ## Architecture
 
 ```
