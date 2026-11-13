@@ -3,8 +3,9 @@
 /** Scan-detail building blocks. Every value renders from the deterministic ScanResult JSON. */
 import { useMemo, useState } from 'react';
 import type { CookieObservation, RuleResult, ScanResult, ScenarioResult } from '@consenttrace/shared';
+import { compareScanResults, type ScenarioComparison } from '@consenttrace/scanner-core';
 import { fmtMs } from '@/lib/client';
-import { categoryTone, Chip, severityTone } from './ui';
+import { Card, categoryTone, Chip, severityTone, Stat } from './ui';
 
 const SCENARIO_LABEL: Record<string, string> = {
   no_action: 'No action',
@@ -280,6 +281,144 @@ export function EvidenceTabs({ result, scanId }: { result: ScanResult; scanId: s
             </figure>
           ))}
         </div>
+      )}
+    </div>
+  );
+}
+
+function DomainChips({ added, removed, trackingAdded }: { added: string[]; removed: string[]; trackingAdded?: Set<string> }) {
+  if (added.length === 0 && removed.length === 0) return null;
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {added.map((d) => (
+        <span key={`a-${d}`} className="mono rounded-md bg-[var(--bad-soft)] px-2 py-0.5 text-[11.5px] text-[var(--bad)]" title={trackingAdded?.has(d) ? 'New tracking domain' : 'New domain'}>
+          + {d}{trackingAdded?.has(d) ? ' · tracking' : ''}
+        </span>
+      ))}
+      {removed.map((d) => (
+        <span key={`r-${d}`} className="mono rounded-md bg-[var(--good-soft)] px-2 py-0.5 text-[11.5px] text-[var(--good)]" title="Domain no longer observed">
+          − {d}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function ScenarioDiff({ diff }: { diff: ScenarioComparison }) {
+  const { cookies, domains, trackingDomains, storageKeys } = diff;
+  const trackingAdded = new Set(trackingDomains.added);
+  const changed =
+    cookies.added.length + cookies.removed.length + cookies.changed.length +
+    domains.added.length + domains.removed.length + storageKeys.added.length + storageKeys.removed.length > 0 ||
+    diff.bannerAfterReload.before !== diff.bannerAfterReload.after;
+  return (
+    <Card title={SCENARIO_LABEL[diff.scenario] ?? diff.scenario} right={!changed ? <Chip tone="good">no changes</Chip> : undefined}>
+      {!changed ? (
+        <p className="muted text-[13px]">Cookies, domains, storage and banner behaviour are identical in both scans.</p>
+      ) : (
+        <div className="space-y-3.5">
+          {(cookies.added.length > 0 || cookies.removed.length > 0) && (
+            <table className="tbl">
+              <thead><tr><th>Change</th><th>Cookie</th><th>Domain</th><th>Category</th><th>Vendor</th></tr></thead>
+              <tbody>
+                {cookies.added.map((c) => (
+                  <tr key={`a-${c.name}|${c.domain}|${c.path}`}>
+                    <td className="font-semibold text-[var(--bad)]">+ added</td>
+                    <td className="mono font-semibold">{c.name}</td>
+                    <td className="mono muted">{c.domain}</td>
+                    <td><Chip tone={categoryTone(c.category)}>{c.category === 'strictly_necessary' ? 'necessary' : c.category}</Chip></td>
+                    <td>{c.vendor ?? '—'}</td>
+                  </tr>
+                ))}
+                {cookies.removed.map((c) => (
+                  <tr key={`r-${c.name}|${c.domain}|${c.path}`}>
+                    <td className="font-semibold text-[var(--good)]">− removed</td>
+                    <td className="mono font-semibold">{c.name}</td>
+                    <td className="mono muted">{c.domain}</td>
+                    <td><Chip tone={categoryTone(c.category)}>{c.category === 'strictly_necessary' ? 'necessary' : c.category}</Chip></td>
+                    <td>{c.vendor ?? '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          {cookies.changed.length > 0 && (
+            <div>
+              <p className="mb-1 text-[12px] font-semibold">Changed cookies</p>
+              <ul className="space-y-1 text-[12.5px]">
+                {cookies.changed.map((ch) => (
+                  <li key={`${ch.after.name}|${ch.after.domain}|${ch.after.path}`}>
+                    <span className="mono font-semibold">{ch.after.name}</span>{' '}
+                    <span className="muted">— {ch.changedFields.join(', ')} changed</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {(domains.added.length > 0 || domains.removed.length > 0) && (
+            <div>
+              <p className="mb-1.5 text-[12px] font-semibold">Request domains</p>
+              <DomainChips added={domains.added} removed={domains.removed} trackingAdded={trackingAdded} />
+            </div>
+          )}
+          {(storageKeys.added.length > 0 || storageKeys.removed.length > 0) && (
+            <div>
+              <p className="mb-1 text-[12px] font-semibold">Storage keys</p>
+              <ul className="space-y-0.5 text-[12.5px]">
+                {storageKeys.added.map((k) => <li key={`a-${k}`} className="mono text-[var(--bad)]">+ {k}</li>)}
+                {storageKeys.removed.map((k) => <li key={`r-${k}`} className="mono text-[var(--good)]">− {k}</li>)}
+              </ul>
+            </div>
+          )}
+          {diff.bannerAfterReload.before !== diff.bannerAfterReload.after && (
+            <p className="text-[12.5px]">
+              <span className="font-semibold">Banner after reload:</span>{' '}
+              <span className="muted">
+                {diff.bannerAfterReload.before === null ? 'not checked' : diff.bannerAfterReload.before ? 'shown again' : 'persisted'}
+                {' → '}
+                {diff.bannerAfterReload.after === null ? 'not checked' : diff.bannerAfterReload.after ? 'shown again' : 'persisted'}
+              </span>
+            </p>
+          )}
+        </div>
+      )}
+    </Card>
+  );
+}
+
+/** Full "what changed" view between two scan results, rendered from compareScanResults. */
+export function CompareView({ before, after }: { before: ScanResult; after: ScanResult }) {
+  const cmp = useMemo(() => compareScanResults(before, after), [before, after]);
+  const s = cmp.summary;
+  return (
+    <div className="space-y-5">
+      <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <Stat label="New findings" value={s.findingsAppeared} tone={s.findingsAppeared > 0 ? 'bad' : 'good'} />
+        <Stat label="Resolved findings" value={s.findingsResolved} tone={s.findingsResolved > 0 ? 'good' : 'neutral'} />
+        <Stat label="Cookies added" value={s.cookiesAdded} />
+        <Stat label="Cookies removed" value={s.cookiesRemoved} />
+        <Stat label="Tracking domains +" value={s.trackingDomainsAdded} tone={s.trackingDomainsAdded > 0 ? 'bad' : 'good'} />
+        <Stat label="Tracking domains −" value={s.trackingDomainsRemoved} tone={s.trackingDomainsRemoved > 0 ? 'good' : 'neutral'} />
+      </div>
+
+      <Card title={`New findings (${cmp.findings.appeared.length})`} right={cmp.findings.appeared.length === 0 ? <Chip tone="good">none</Chip> : <Chip tone="bad">appeared</Chip>}>
+        {cmp.findings.appeared.length === 0
+          ? <p className="muted text-[13px]">No rule findings appeared in the newer scan.</p>
+          : <FindingsList findings={cmp.findings.appeared} />}
+      </Card>
+      <Card title={`Resolved findings (${cmp.findings.resolved.length})`} right={cmp.findings.resolved.length > 0 ? <Chip tone="good">resolved</Chip> : undefined}>
+        {cmp.findings.resolved.length === 0
+          ? <p className="muted text-[13px]">No earlier findings were resolved in the newer scan.</p>
+          : <FindingsList findings={cmp.findings.resolved} />}
+      </Card>
+
+      {cmp.scenarios.map((diff) => <ScenarioDiff key={diff.scenario} diff={diff} />)}
+
+      {(cmp.onlyInBefore.length > 0 || cmp.onlyInAfter.length > 0) && (
+        <p className="muted text-[12px]">
+          {cmp.onlyInBefore.length > 0 && <>Scenarios only in the earlier scan: {cmp.onlyInBefore.map((k) => SCENARIO_LABEL[k] ?? k).join(', ')}. </>}
+          {cmp.onlyInAfter.length > 0 && <>Scenarios only in the newer scan: {cmp.onlyInAfter.map((k) => SCENARIO_LABEL[k] ?? k).join(', ')}.</>}
+        </p>
       )}
     </div>
   );

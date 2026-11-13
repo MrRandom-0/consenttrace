@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { api, fmtDate } from '@/lib/client';
 import { Card, Chip, EmptyState, statusTone } from '@/components/ui';
@@ -17,7 +18,10 @@ export default function ScansPage() {
 
   return (
     <div className="space-y-5">
-      <h1 className="text-[22px] font-bold tracking-tight">Scans</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-[22px] font-bold tracking-tight">Scans</h1>
+        <Link className="btn btn-subtle" href="/app/scans/compare">Compare scans</Link>
+      </div>
       {scans.data && scans.data.scans.length === 0 ? (
         <EmptyState title="No scans yet" body="Trigger your first scan from a site page. Each scan tests no-action, reject and accept states in isolated browser contexts." />
       ) : (

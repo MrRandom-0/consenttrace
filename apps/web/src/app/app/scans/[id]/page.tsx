@@ -66,6 +66,11 @@ export default function ScanDetailPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          {scan.baseline_scan_id && result && (
+            <Link className="btn btn-subtle" href={`/app/scans/compare?from=${scan.baseline_scan_id}&to=${scan.id}`}>
+              Compare to baseline
+            </Link>
+          )}
           {scan.report_artifact_path && (
             <a className="btn btn-subtle" href={`/api/scans/${scan.id}/artifacts/report.html`} target="_blank" rel="noopener noreferrer">
               Open evidence report
