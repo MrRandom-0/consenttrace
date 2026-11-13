@@ -16,6 +16,10 @@ Sign in to the dashboard:
 
 ![ConsentTrace sign-in page](docs/screenshots/login.png)
 
+Compare any two scans to see exactly what changed — findings that appeared or resolved, plus per-scenario cookie, domain and storage differences:
+
+![ConsentTrace scan comparison view](docs/screenshots/compare.png)
+
 ## Architecture
 
 ```
